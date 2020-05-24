@@ -6,6 +6,10 @@ import requests
 
 os.chdir(r'/home/niko/data/')
 
+def self_token():
+    with open("Timmy/token.json", 'r') as fp:
+        data = json.load(fp)
+    return data['dbl']
 
 def create_time(server_id: str):
     if not os.path.isfile("Timmy"):
@@ -56,7 +60,7 @@ def edit_time(server_id: str):
 
 def check_dbl_vote(user_id: str):
     header = {
-        'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMTE0OTQ4MDQ2NDYxMzQwNiIsImJvdCI6dHJ1ZSwiaWF0IjoxNTgwMjkzMTM2fQ.-BKchzF0XEH_QWnpHnGIkmWoXjcyXobifUUmf1E41vQ'}
+        'Authorization': self_token()}
     r = requests.get(
         "https://top.gg/api/bots/631149480464613406/check?userId=%s" % (user_id), headers=header)
     data = r.json()
