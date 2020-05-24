@@ -1,13 +1,7 @@
-import json
-
 import dbl
 from discord.ext import commands
 
-
-def self_token():
-    with open("Timmy/token.json", 'r') as fp:
-        data = json.load(fp)
-    return data['dbl']
+from lib.general import self_token
 
 
 class TopGG(commands.Cog):
