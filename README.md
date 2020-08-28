@@ -1,2 +1,2 @@
 # timmy
- advertising bot
+Advertising bot
