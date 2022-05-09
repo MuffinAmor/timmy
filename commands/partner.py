@@ -2,7 +2,7 @@ import discord
 from discord import slash_command
 from discord.ext import commands
 
-from lib.Cache import channels, servers, config
+from lib.Cache import channels, servers, config, SomeFreeSpace
 from lib.JsonThings import JsonHandling
 from lib.func import time_calc
 from lib.setting_menu import ChannelThings, BumpStuff
@@ -39,6 +39,10 @@ class PartnerClass(commands.Cog):
                 await ctx.respond(f"Sorry, you still need to wait {time}")
             elif respond == "c":
                 await ctx.respond("Please provide a description, before you bump your server!")
+            elif SomeFreeSpace(str(ctx.guild.id)).get_invite() == "":
+                await ctx.respond("Provide a invite before you bump your server.")
+            elif servers()[str(ctx.guild.id)]["channel_id"] == "":
+                await ctx.respond("Don't you want to set an advertisement channel before you bump your server?")
             else:
                 await ctx.respond("It looks like, you do not have finish the setup.")
 

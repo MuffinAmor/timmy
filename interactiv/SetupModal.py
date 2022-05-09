@@ -33,12 +33,15 @@ class MyModal(Modal):
         )
 
     async def callback(self, interaction: discord.Interaction):
-        if InviteValidation(self.children[1].value).exist(self.server):
-            InviteStuff(interaction.guild_id, "").set_invite()
-            await interaction.response.send_message("What are you doing?\nPlease use an invite for this server.")
-        elif InviteValidation(self.children[1].value).formation():
+        if InviteValidation(self.children[1].value).formation():
             InviteStuff(interaction.guild_id, "").set_invite()
             await interaction.response.send_message("Please use a valid discord invite link.")
+            # raise TypeError("Please use a valid discord invite link.")
+        elif InviteValidation(self.children[1].value).exist(await self.server.invites()):
+            InviteStuff(interaction.guild_id, "").set_invite()
+            await interaction.response.send_message("What are you doing?\nPlease use an invite for this server.")
+            #raise TypeError("What are you doing?\nPlease use an invite for this server.")
+
         else:
             InviteStuff(interaction.guild_id, self.children[1].value).set_invite()
             await interaction.response.send_message("The description has been changed successfully!")

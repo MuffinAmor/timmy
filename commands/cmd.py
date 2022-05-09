@@ -60,7 +60,7 @@ class CommandClass(commands.Cog):
 
     @slash_command(name="invite", description="Create an invite link!")
     async def invite(self, ctx):
-        permissions = discord.Permissions(52289)
+        permissions = discord.Permissions(51297)
         dinge = discord.utils.oauth_url(self.bot.user.id, permissions=permissions,
                                         scopes=("bot", "applications.commands"),
                                         disable_guild_select=False)

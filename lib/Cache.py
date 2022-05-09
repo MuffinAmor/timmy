@@ -33,7 +33,8 @@ def servers():
                 "description": i["text"],
                 "author": i["author"],
                 "img_url": i["img_url"],
-                "server_invite": i["server_invite"]
+                "server_invite": i["server_invite"],
+                "channel_id": i["channel_id"]
             }
     return server_cache
 
