@@ -69,6 +69,7 @@ class CommandClass(commands.Cog):
         await ctx.respond(embed=embed)
 
     @commands.has_guild_permissions(administrator=True)
+    @commands.bot_has_guild_permissions(manage_guild=True)
     @slash_command(name="set_desc", description="Descripe your Server!")
     async def set_desc(self, ctx):
         modal = MyModal(ctx.guild)

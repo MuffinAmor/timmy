@@ -5,7 +5,6 @@ from lib.JsonThings import JsonHandling
 from lib.sql import session_scope, DataTable
 
 
-
 class ServerThings:
     def __init__(self, server_id: int):
         self.server_id = server_id
@@ -25,12 +24,14 @@ class ServerThings:
                 db_session.add(new_server)
 
     def get_server(self):
-        return self.server_id in servers()
+        return int(self.server_id) in servers()
 
     def delete_server(self):
         with session_scope() as db_session:
             if self.get_server():
                 db_session.query(DataTable).filter_by(server_id=self.server_id).delete()
+                servers.cache_clear()
+                return True
 
 
 class ChannelThings(ServerThings):
@@ -105,3 +106,5 @@ class BumpStuff(ServerThings):
                     return "b"
             else:
                 return "c"
+        else:
+            return "d"

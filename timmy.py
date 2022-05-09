@@ -21,7 +21,7 @@ botcolor = 0xffffff
 bot.remove_command('help')
 ########################################################################################################################
 
-extensions = ['commands.auto', 'commands.cmd', 'commands.partner']
+extensions = ['commands.auto', 'commands.cmd', 'commands.partner', 'commands.SupportCommands']
 
 
 @bot.event

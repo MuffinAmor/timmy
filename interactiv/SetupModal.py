@@ -40,7 +40,7 @@ class MyModal(Modal):
         elif InviteValidation(self.children[1].value).exist(await self.server.invites()):
             InviteStuff(interaction.guild_id, "").set_invite()
             await interaction.response.send_message("What are you doing?\nPlease use an invite for this server.")
-            #raise TypeError("What are you doing?\nPlease use an invite for this server.")
+            # raise TypeError("What are you doing?\nPlease use an invite for this server.")
 
         else:
             InviteStuff(interaction.guild_id, self.children[1].value).set_invite()

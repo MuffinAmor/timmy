@@ -4,7 +4,7 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 
-from lib.Cache import servers
+from lib.Cache import servers, channels
 from lib.setting_menu import ServerThings
 
 with open("config.json") as fp:
@@ -18,6 +18,7 @@ class auto(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
+        print(error)
         if isinstance(error, commands.CommandNotFound):
             if ctx.message.content == "t!help":
                 await ctx.send("We are using / Commands now!")
@@ -35,21 +36,29 @@ class auto(commands.Cog):
             embed.timestamp = datetime.utcnow()
             await ctx.channel.send(embed=embed)
             await channel.send(embed=embed)
-            print(error)
 
     @commands.Cog.listener()
     async def on_application_command_error(self, ctx, error):
-        channel = self.bot.get_channel(data["error"])
-        embed = discord.Embed(title="Ops, there is an error!",
-                              color=ctx.author.color)
-        embed.add_field(name='Server:', value='{}'.format(ctx.guild), inline=True)
-        embed.add_field(name='Command:', value='{}'.format(ctx.command.name), inline=False)
-        embed.add_field(name='Error:', value="```python\n{}```".format(error), inline=False)
-        embed.set_thumbnail(url=self.bot.user.avatar)
-        embed.set_footer(text='Error Message', icon_url=ctx.author.avatar)
-        embed.timestamp = datetime.utcnow()
-        await ctx.respond(embed=embed)
-        await channel.send(embed=embed)
+        print(error)
+        if isinstance(error, discord.errors.ApplicationCommandInvokeError):
+            ServerThings(ctx.guild.id).create_server(ctx.guild.icon)
+            servers.cache_clear()
+            channels.cache_clear()
+            await ctx.respond("A just felt a bit off, please try your command again.")
+        elif isinstance(error, discord.ext.commands.errors.BotMissingPermissions):
+            await ctx.respond(str(error) + "\nRun /botinfo to get informations about Timmy's current permissions.")
+        else:
+            channel = self.bot.get_channel(data["error"])
+            embed = discord.Embed(title="Ops, there is an error!",
+                                  color=ctx.author.color)
+            embed.add_field(name='Server:', value='{}'.format(ctx.guild), inline=True)
+            embed.add_field(name='Command:', value='{}'.format(ctx.command.name), inline=False)
+            embed.add_field(name='Error:', value="```python\n{}```".format(error), inline=False)
+            embed.set_thumbnail(url=self.bot.user.avatar)
+            embed.set_footer(text='Error Message', icon_url=ctx.author.avatar)
+            embed.timestamp = datetime.utcnow()
+            await ctx.respond(embed=embed)
+            await channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
